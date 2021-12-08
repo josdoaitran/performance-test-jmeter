@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>jmeter-tyme-pipeline</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <jmeterScript>test1.jmx</jmeterScript>
+        <protocol>https</protocol>
+        <port>443</port>
+        <thread.number>20</thread.number>
+        <rampup>10</rampup>
+        <startup.delay>0</startup.delay>
+        <test.duration>60</test.duration>
+        <target.rpm>30</target.rpm>
+        <jmeter.plugin.version>3.4.0</jmeter.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>${jmeter.plugin.version}</version>
+                <executions>
+                    <!-- Run JMeter tests -->
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                    <!-- Fail build on errors in test -->
+                    <execution>
+                        <id>jmeter-check-results</id>
+                        <goals>
+                            <goal>results</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>configuration</id>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateReports>true</generateReports>
+                    <testFilesIncluded>
+                        <testFilesDirectory>${basedir}/src/test/jmeter/</testFilesDirectory>
+                        <jMeterTestFile>${jmeterScript}</jMeterTestFile>
+                    </testFilesIncluded>
+                    <propertiesUser>
+                        <app.protocol>${protocol}</app.protocol>
+                        <app.port>${port}</app.port>
+                        <thread.number>${thread.number}</thread.number>
+                        <rampup>${rampup}</rampup>
+                        <startup.delay>${startup.delay}</startup.delay>
+                        <test.duration>${test.duration}</test.duration>
+                    </propertiesUser>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
